@@ -1,5 +1,4 @@
 #include"ChessBoard.h"
-
 #include<iostream>
 
 using std::cout;
@@ -19,7 +18,7 @@ int main() {
 	cb.submitMove("D4", "H6");
 	cout << '\n';
 
-	cb.submitMove("D2", "D4");
+	/*cb.submitMove("D2", "D4");
 	cout << '\n';
 
 	cb.submitMove("F8", "B4");
@@ -73,7 +72,7 @@ int main() {
 	cout << '\n';
 
 	cb.submitMove("D3", "G6");
-	cout << '\n';
+	cout << '\n';*/
 
 	return 0;
 }
