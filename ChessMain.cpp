@@ -18,10 +18,10 @@ int main() {
 	cb.submitMove("D4", "H6");
 	cout << '\n';
 
-	/*cb.submitMove("D2", "D4");
+	cb.submitMove("D2", "C3");
 	cout << '\n';
 
-	cb.submitMove("F8", "B4");
+	/*cb.submitMove("F8", "B4");
 	cout << '\n';
 
 	cout << "=========================\n";

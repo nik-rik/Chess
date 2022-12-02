@@ -1,17 +1,17 @@
 #include"Piece.h"
 #include"Knight.h"
+#include"ChessBoard.h"
 #include<iostream>
 
 using namespace std;
 
 
-Knight::Knight(Colour colour) {
-  setColour(colour);
-  setPieceType(KNIGHT);
+Knight::Knight(Colour colour) : Piece(colour, KNIGHT) {
+  
 }
 
-bool Knight::checkMove() const {
+void Knight::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
 
-  return false;
+
 
 }

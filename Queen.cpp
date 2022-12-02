@@ -1,17 +1,17 @@
 #include"Piece.h"
 #include"Queen.h"
+#include"ChessBoard.h"
 #include<iostream>
 
 using namespace std;
 
 
-Queen::Queen(Colour colour) {
-  setColour(colour);
-  setPieceType(QUEEN);
+Queen::Queen(Colour colour) : Piece(colour, QUEEN){
+  
 }
 
-bool Queen::checkMove() const {
+void Queen::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
 
-  return false;
+
 
 }

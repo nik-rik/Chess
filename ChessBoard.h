@@ -5,7 +5,10 @@
 
 #include"Piece.h"
 
+class Piece;
+
 /*********************** ChessBoard Class ***************************/
+
 
 class ChessBoard{
  public:
@@ -17,6 +20,7 @@ class ChessBoard{
 
   void checkTurn(const Piece*);//const;
   void checkSourceNULL(const Piece*, const char*);//const;
+
   
   bool checkWhiteCheck();
   bool checkBlackCheck();
@@ -28,6 +32,8 @@ class ChessBoard{
   Piece* squares[8][8];
   Colour turn;
 
+  void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*);
+  
   void fullPieceSetup(const Colour);
   void mainPieceSetup(const Colour);
   void pawnSetup(const Colour);

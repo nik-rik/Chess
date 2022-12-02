@@ -4,6 +4,7 @@
 #define BISHOP_H
 
 #include"Piece.h"
+#include"ChessBoard.h"
 
 /*********************** Bishop Class ***************************/
 
@@ -12,7 +13,7 @@ class Bishop : public Piece {
  public:
   Bishop(Colour);
 
-  bool checkMove() const /*override final*/;
+  void checkMove(const int, const int, const int, const int, Piece*, Piece*, ChessBoard&) /*const*/ override final;  
 
  private:
 
