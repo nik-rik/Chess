@@ -78,3 +78,11 @@ std::ostream& operator << (std::ostream& out, const PieceType type){
   return out;
     
 }
+
+
+Colour& operator++(Colour& colour){
+  (colour == WHITE) ? colour = BLACK : colour = WHITE;
+  return colour;
+}
+
+

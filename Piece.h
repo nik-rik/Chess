@@ -13,6 +13,8 @@ enum Colour {WHITE, BLACK};
 enum PieceType {PAWN, KING, ROOK, BISHOP, QUEEN, KNIGHT};
 
 std::ostream& operator<<(std::ostream&, Colour); // Overloads the << operator for Colour
+Colour& operator++(Colour&);
+
 std::ostream& operator<<(std::ostream&, PieceType); // Overloads the << operator for PieceType
 
 

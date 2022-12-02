@@ -25,12 +25,12 @@ ChessBoard::ChessBoard() : turn(WHITE), whiteCheck(false), blackCheck(false){
 }
 
 void ChessBoard::fullPieceSetup(Colour colour){
-  // mainPieceSetup(colour);
+  mainPieceSetup(colour);
   pawnSetup(colour);
 
 }
 
-/* void ChessBoard::mainPieceSetup(Colour colour){
+void ChessBoard::mainPieceSetup(Colour colour){
   int i;
   
   if (colour == WHITE)
@@ -48,7 +48,8 @@ void ChessBoard::fullPieceSetup(Colour colour){
   squares[i][7] = new Rook(colour);
 
 }
-*/
+
+
 void ChessBoard::pawnSetup(Colour colour){
   int i;
 
@@ -130,7 +131,8 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
 
   cout << turn << "'s " << sourcePiece->getPieceType() << " moves from " << source_square << " to " << destination_square << endl;
 
-
+  ++turn;
+  
 }
 
 
