@@ -18,13 +18,13 @@ int main() {
 	cb.submitMove("D4", "H6");
 	cout << '\n';
 
-	cb.submitMove("D2", "D4");
+	cb.submitMove("Q2", "Q4");
 	cout << '\n';
 
 	cb.submitMove("F8", "B4");
 	cout << '\n';
 
-	/*cout << "=========================\n";
+	cout << "=========================\n";
 	cout << "Alekhine vs. Vasic (1931)\n";
 	cout << "=========================\n\n";
 
@@ -72,7 +72,7 @@ int main() {
 	cout << '\n';
 
 	cb.submitMove("D3", "G6");
-	cout << '\n';*/
+	cout << '\n';
 
 	return 0;
 }

@@ -14,6 +14,8 @@ class ChessBoard{
  public:
   ChessBoard();
 
+  void resetBoard();
+  
   void submitMove(const char*, const char*);
 
   Piece* getSquare(const int, const int) /*const*/; 
@@ -21,6 +23,7 @@ class ChessBoard{
   void checkTurn(const Piece*);//const;
   void checkSourceNULL(const Piece*, const char*);//const;
 
+  
   
   bool checkWhiteCheck();
   bool checkBlackCheck();
@@ -30,14 +33,12 @@ class ChessBoard{
 
  private:
   Piece* squares[8][8];
+  Piece* whitePieces[6];
+  Piece* blackPieces[6];
   Colour turn;
 
-  void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*);
+  void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*, Piece*);
   
-  void fullPieceSetup(const Colour);
-  void mainPieceSetup(const Colour);
-  void pawnSetup(const Colour);
-
   bool whiteCheck;
   bool blackCheck;
 
