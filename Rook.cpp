@@ -10,13 +10,15 @@ Rook::Rook(Colour colour) : Piece(colour, ROOK){
  
 }
 
-void Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
+bool Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
+    
   if(sourceRow == destinationRow){
     int colOffset = (destinationCol - sourceCol > 0) ? 1 : -1;
     for(int checkCol = sourceCol + colOffset; checkCol != destinationCol; checkCol += colOffset)
       if(board.getSquare(sourceRow, checkCol) != nullptr)
 	throw domain_error("cannot move to");
-   
+
+    return true;
   }
 
   else if(destinationCol == sourceCol){
@@ -25,14 +27,15 @@ void Rook::checkMove(const int sourceCol, const int sourceRow, const int destina
       if(board.getSquare(sourceCol,checkRow) != nullptr)
 	throw domain_error("cannot move to");
 
+    return true;
   }
 
-  if (destinationPiece == nullptr || destinationPiece->getColour() !=  sourcePiece->getColour())
-      return;
-
-  throw domain_error("cannot move to");
+  return false;
   
 }
+  
+
+
 
 
 

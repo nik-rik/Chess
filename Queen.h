@@ -13,7 +13,7 @@ class Queen : public Piece {
  public:
   Queen(Colour);
 
-  void checkMove(const int, const int, const int, const int, Piece*, Piece*, ChessBoard&) /*const*/ override final;
+  bool checkMove(const int, const int, const int, const int, Piece*, Piece*, ChessBoard&) /*const*/ override final;
   
 
  private:

@@ -10,15 +10,15 @@ King::King(Colour colour) : Piece(colour, KING) {
 
 }
 
-void King::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) { 
+bool King::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) { 
   int rowOffset = abs(destinationRow - sourceRow);
   int colOffset = abs(destinationCol - sourceCol);
 
-  if((rowOffset == 1) && (colOffset == 1))
-    return;
+  if((rowOffset == 1) || (colOffset == 1))
+    return true;
 
   
-  throw domain_error("cannot move to");
+  return false;
 
   
 }

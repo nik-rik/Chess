@@ -10,39 +10,39 @@ Pawn::Pawn(Colour colour) : Piece(colour, PAWN){
  
 }
 
-void Pawn::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) { 
+bool Pawn::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) { 
 
   if(sourcePiece->getColour() == WHITE){
     if (destinationCol - sourceCol == 0 && destinationRow - sourceRow == 1)
       if (destinationPiece == nullptr)
-	return;
+	return true;
 
     if (destinationCol - sourceCol == 0 && destinationRow - sourceRow == 2)
-      if(destinationPiece == nullptr)
-	if(sourceRow == 1)
-	  return;
+      if((destinationPiece == nullptr) && (board.getSquare(destinationCol,(destinationRow - 1))) == nullptr)
+	 if(sourceRow == 1)
+	  return true;
 
     if ((abs(destinationCol - sourceCol) == 1 && destinationRow - sourceRow == 1))
       if(destinationPiece != nullptr && destinationPiece->getColour() == BLACK)
-	return;
+	return true;
 
   }
   
   else if(sourcePiece->getColour() == BLACK){
     if (destinationCol - sourceCol == 0 && destinationRow - sourceRow == -1)
       if (destinationPiece == nullptr)
-	return;
+	return true;
 
     if (destinationCol - sourceCol == 0 && destinationRow - sourceRow == -2)
-      if(destinationPiece == nullptr)
+      if((destinationPiece == nullptr) && (board.getSquare(destinationCol,(destinationRow + 1))) == nullptr)
 	if(sourceRow == 6)
-	  return;
+	  return true;
 
     if ((abs(destinationCol - sourceCol) == 1 && destinationRow - sourceRow == -1))
       if(destinationPiece != nullptr && destinationPiece->getColour() == WHITE)
-	return;
+	return true;
   }
     
-  throw domain_error("cannot move to");
+  return false;
 
 }

@@ -38,6 +38,10 @@ class ChessBoard{
   Colour turn;
 
   void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*, Piece*);
+
+  bool checkAttacking(const Piece*);
+  
+  bool isInCheck(Colour colour);
   
   bool whiteCheck;
   bool blackCheck;

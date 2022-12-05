@@ -74,7 +74,8 @@ void ChessBoard::submitMove(const char* source_square, const char* destination_s
     checkSourceNULL(sourcePiece, source_square);
     checkTurn(sourcePiece);
 
-    sourcePiece->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece, *this);
+    if ((sourcePiece->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece, *this) == false) || checkAttacking(destinationPiece) == false)
+      throw domain_error("cannot move to");
   
     makeMove(source_square, destination_square, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece);
     
@@ -122,6 +123,13 @@ void ChessBoard::checkTurn(const Piece* sourcePiece){
       throw invalid_argument("Incorrect turn");
 }
 
+bool ChessBoard::checkAttacking(const Piece* destinationPiece){
+  if (destinationPiece == nullptr || destinationPiece->getColour() != turn)
+    return true;
+
+  return false;
+}
+
 void ChessBoard::makeMove(const char* source_square, const char* destination_square, const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece){
   cout << turn << "'s " << sourcePiece->getPieceType() << " moves from " << source_square << " to " << destination_square;
 
@@ -136,38 +144,53 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
       cout << "White's ";
 
     cout << destinationPiece->getPieceType() << endl;
-  }
-      
+  }    
 
   squares[destinationRow][destinationCol] = sourcePiece;
   squares[sourceRow][sourceCol] = nullptr;
 
-  
-  ++turn;
+  if (turn == WHITE){
+    if (isInCheck(BLACK))
+      cout << "Black is in check" << endl;
+  }
+  else if (turn == BLACK){
+      if (isInCheck(WHITE))
+	cout << "White is in check" << endl; 
+  }
+++turn;
   
 }
 
-/*bool isInCheck(Colour colour){
+bool ChessBoard::isInCheck(Colour colour){
   int kingRow;
   int kingCol;
+  Piece* kingPiece;
+  Piece* attackingPiece;
 
-  for(int row = 0; row < 8, row++)
-    for(int col = 0, col < 8; col++)
+  for(int row = 0; row < 8; row++)
+    for(int col = 0; col < 8; col++)
       if(squares[row][col] != nullptr)
 	if(squares[row][col]->getPieceType() == KING)
 	  if(squares[row][col]->getColour() == colour){
 	    kingRow = row;
 	    kingCol = col;
+	    break;
 	  }
 
-  for(int row = 0; row < 8, row++)
-    for(int col = 0, col < 8; col++)  
+  kingPiece = getSquare(kingCol, kingRow);
+
+  for(int row = 0; row < 8; row++)
+    for(int col = 0; col < 8; col++)  
       if(squares[row][col] != nullptr)
-	if(squares[row][col]->getColour() != colour)
-	  checkMove(col, row, kingCol, kingRow)
+	if(squares[row][col]->getColour() != colour){
+	  attackingPiece = getSquare(col, row);
+	  if (attackingPiece->checkMove(col, row, kingCol, kingRow, attackingPiece, kingPiece, *this) == true)
+	    return true;
+	  }
 
+  return false;
 
-	  } */
+}
 
 
 
