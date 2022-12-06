@@ -10,7 +10,7 @@ Queen::Queen(Colour colour) : Piece(colour, QUEEN){
   
 }
 
-bool Queen::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
+bool Queen::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
   if(sourceRow == destinationRow){
     int colOffset = (destinationCol - sourceCol > 0) ? 1 : -1;
     for (int checkCol = sourceCol + colOffset; checkCol != destinationCol; checkCol+= colOffset)

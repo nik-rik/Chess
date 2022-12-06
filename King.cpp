@@ -10,7 +10,7 @@ King::King(Colour colour) : Piece(colour, KING) {
 
 }
 
-bool King::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) { 
+bool King::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
   int rowOffset = abs(destinationRow - sourceRow);
   int colOffset = abs(destinationCol - sourceCol);
 

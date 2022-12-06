@@ -10,7 +10,7 @@ Bishop::Bishop(Colour colour) : Piece(colour, BISHOP) {
  
 }
 
-bool Bishop::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
+bool Bishop::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
   if (abs(destinationCol - sourceCol) == abs(destinationRow - sourceRow) && destinationCol - sourceCol != 0){
     int rowOffset = (destinationRow - sourceRow > 0) ? 1 : -1;
     int colOffset = (destinationCol - sourceCol > 0) ? 1 : -1;

@@ -10,7 +10,7 @@ Rook::Rook(Colour colour) : Piece(colour, ROOK){
  
 }
 
-bool Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
+bool Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
     
   if(sourceRow == destinationRow){
     int colOffset = (destinationCol - sourceCol > 0) ? 1 : -1;

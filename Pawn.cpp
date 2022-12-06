@@ -10,9 +10,10 @@ Pawn::Pawn(Colour colour) : Piece(colour, PAWN){
  
 }
 
-bool Pawn::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) { 
-
-  if(sourcePiece->getColour() == WHITE){
+bool Pawn::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) { 
+  Piece* destinationPiece = board.getSquare(destinationCol, destinationRow);
+  
+  if(getColour() == WHITE){
     if (destinationCol - sourceCol == 0 && destinationRow - sourceRow == 1)
       if (destinationPiece == nullptr)
 	return true;
@@ -28,7 +29,7 @@ bool Pawn::checkMove(const int sourceCol, const int sourceRow, const int destina
 
   }
   
-  else if(sourcePiece->getColour() == BLACK){
+  else if(getColour() == BLACK){
     if (destinationCol - sourceCol == 0 && destinationRow - sourceRow == -1)
       if (destinationPiece == nullptr)
 	return true;

@@ -39,9 +39,13 @@ class ChessBoard{
 
   void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*, Piece*);
 
-  bool checkAttacking(const Piece*);
+  bool checkUnoccupiedOrAttacking(const Piece*);
   
-  bool isInCheck(Colour colour);
+  bool isInCheck(Colour);
+  bool checkCheck(Colour, int, int, int, int, Piece*, ChessBoard);
+  
+  Piece* findKing(Colour);
+  bool isCheckmate(Colour);
   
   bool whiteCheck;
   bool blackCheck;

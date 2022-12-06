@@ -10,7 +10,7 @@ Knight::Knight(Colour colour) : Piece(colour, KNIGHT) {
   
 }
 
-bool Knight::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece, ChessBoard& board) {
+bool Knight::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
   if (sourceCol == destinationCol + 1 || sourceCol == destinationCol - 1)
     if (sourceRow == destinationRow + 2 || sourceRow == destinationRow - 2)
       return true;

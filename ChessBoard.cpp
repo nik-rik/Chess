@@ -74,7 +74,7 @@ void ChessBoard::submitMove(const char* source_square, const char* destination_s
     checkSourceNULL(sourcePiece, source_square);
     checkTurn(sourcePiece);
 
-    if ((sourcePiece->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece, *this) == false) || checkAttacking(destinationPiece) == false)
+    if ((sourcePiece->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == false) || checkUnoccupiedOrAttacking(destinationPiece) == false)
       throw domain_error("cannot move to");
   
     makeMove(source_square, destination_square, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece);
@@ -123,7 +123,7 @@ void ChessBoard::checkTurn(const Piece* sourcePiece){
       throw invalid_argument("Incorrect turn");
 }
 
-bool ChessBoard::checkAttacking(const Piece* destinationPiece){
+bool ChessBoard::checkUnoccupiedOrAttacking(const Piece* destinationPiece){
   if (destinationPiece == nullptr || destinationPiece->getColour() != turn)
     return true;
 
@@ -149,23 +149,61 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
   squares[destinationRow][destinationCol] = sourcePiece;
   squares[sourceRow][sourceCol] = nullptr;
 
-  if (turn == WHITE){
-    if (isInCheck(BLACK))
-      cout << "Black is in check" << endl;
+if (turn == WHITE){
+    if (isInCheck(BLACK)){
+      if (isCheckmate(BLACK))
+	cout << "Black is in checkmate" << endl;
+      else
+	cout << "Black is in check" << endl;
+    }
   }
   else if (turn == BLACK){
-      if (isInCheck(WHITE))
-	cout << "White is in check" << endl; 
+    if (isInCheck(WHITE)){
+	if (isCheckmate(WHITE))
+	  cout << "White is in checkmate" << endl;
+	else
+	  cout << "White is in check" << endl;
+    }
   }
-++turn;
+  
+  ++turn;
   
 }
 
 bool ChessBoard::isInCheck(Colour colour){
+  Piece* attackingPiece;
+  int kingRow;
+  int kingCol;
+
+  for(int row = 0; row < 8; row++)
+    for(int col = 0; col < 8; col++)
+      if(squares[row][col] != nullptr)
+	if(squares[row][col]->getPieceType() == KING)
+	  if(squares[row][col]->getColour() == colour){
+	    kingRow = row;
+	    kingCol = col;
+	    break;
+	  }
+
+
+  for(int row = 0; row < 8; row++)
+    for(int col = 0; col < 8; col++)  
+      if(squares[row][col] != nullptr)
+	if(squares[row][col]->getColour() != colour){
+	  attackingPiece = getSquare(col, row);
+	  if (attackingPiece->checkMove(col, row, kingCol, kingRow, *this) == true)
+	    return true;
+	  }
+
+  return false;
+
+}
+
+
+/*Piece* ChessBoard::findKing(Colour colour){
   int kingRow;
   int kingCol;
   Piece* kingPiece;
-  Piece* attackingPiece;
 
   for(int row = 0; row < 8; row++)
     for(int col = 0; col < 8; col++)
@@ -179,21 +217,72 @@ bool ChessBoard::isInCheck(Colour colour){
 
   kingPiece = getSquare(kingCol, kingRow);
 
+  return kingPiece;
+
+  } */
+
+
+bool ChessBoard::isCheckmate(Colour colour){
+  int kingRow;
+  int kingCol;
+  Piece* kingPiece;
+  Piece* destinationPiece;
+  
   for(int row = 0; row < 8; row++)
-    for(int col = 0; col < 8; col++)  
+    for(int col = 0; col < 8; col++)
       if(squares[row][col] != nullptr)
-	if(squares[row][col]->getColour() != colour){
-	  attackingPiece = getSquare(col, row);
-	  if (attackingPiece->checkMove(col, row, kingCol, kingRow, attackingPiece, kingPiece, *this) == true)
-	    return true;
+	if(squares[row][col]->getPieceType() == KING)
+	  if(squares[row][col]->getColour() == colour){
+	    kingRow = row;
+	    kingCol = col;
+	    break;
 	  }
+
+  kingPiece = getSquare(kingCol, kingRow);
+
+  for(int destinationRow = 0; destinationRow < 8; destinationRow++)
+    for(int destinationCol = 0; destinationCol < 8; destinationCol++)
+      if(kingPiece->checkMove(kingCol, kingRow, destinationCol, destinationRow, *this) == true){
+	destinationPiece = getSquare(destinationCol, destinationRow);
+	if(checkUnoccupiedOrAttacking(destinationPiece) == true)
+	  if(checkCheck(colour, kingCol, kingRow, destinationCol, destinationRow, kingPiece, *this) == false)
+	    return false;
+      }
+
+  
+
+  for(int sourceRow = 0; sourceRow < 8; sourceRow++)
+    for(int sourceCol = 0; sourceRow < 8; sourceCol++)
+      for(int destinationRow = 0; destinationRow < 8; destinationRow++)
+	for(int destinationCol = 0; destinationCol < 8; destinationCol++)
+	  if(getSquare(sourceCol, sourceRow)->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == true){
+	    destinationPiece = getSquare(destinationCol, destinationRow);
+	    if(checkUnoccupiedOrAttacking(destinationPiece) == true){
+	      Piece* sourcePiece = getSquare(sourceCol, sourceRow);
+	      if(checkCheck(colour, sourceCol, sourceRow, destinationRow, destinationCol, sourcePiece, *this) == false)
+		return false;
+	      }
+	  }
+  
+  
+  return true;
+	    
+	  
+}
+
+bool ChessBoard::checkCheck(Colour colour, int sourceCol, int sourceRow, int destinationCol, int destinationRow, Piece* kingPiece, ChessBoard testBoard){
+  testBoard.squares[sourceRow][sourceCol] = nullptr;
+  testBoard.squares[destinationRow][destinationCol] = kingPiece;
+
+  if(isInCheck(colour) == true)
+    return true;
 
   return false;
 
+
 }
 
-
-
+  
 void ChessBoard::resetBoard(){
 
   for (int i = 0; i < 8; i++)
