@@ -31,15 +31,15 @@ class ChessBoard{
   bool checkStalemate();
   bool checkCheckmate();
 
+  Colour turn;
+  
  private:
   Piece* squares[8][8];
   Piece* whitePieces[6];
   Piece* blackPieces[6];
-  Colour turn;
+
 
   void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*, Piece*);
-
-  bool checkUnoccupiedOrAttacking(const Piece*);
   
   bool isInCheck(Colour);
   bool checkCheck(Colour, int, int, int, int, Piece*, ChessBoard);

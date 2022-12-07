@@ -23,7 +23,7 @@ void Piece::setColour(const Colour& _colour){
 }
 
 PieceType Piece::getPieceType() const{
-
+  
   return type;
   
 }

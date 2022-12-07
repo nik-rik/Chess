@@ -11,26 +11,31 @@ Rook::Rook(Colour colour) : Piece(colour, ROOK){
 }
 
 bool Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
+  Piece* destinationPiece = board.getSquare(destinationCol, destinationRow);
+  
+  if(destinationPiece == nullptr || destinationPiece->getColour() != getColour()){    
+    if(sourceRow == destinationRow){
+      int colOffset = (destinationCol - sourceCol > 0) ? 1 : -1;
+      for(int checkCol = sourceCol + colOffset; checkCol != destinationCol; checkCol += colOffset)
+	if(board.getSquare(checkCol, sourceRow) != nullptr)
+	  return false;
+
+      return true;
+    }
+
+    else if(destinationCol == sourceCol){
+      int rowOffset = (destinationRow - sourceRow > 0) ? 1 : -1;
+      for(int checkRow = sourceRow + rowOffset; checkRow != destinationRow; checkRow += rowOffset)
+	if(board.getSquare(sourceCol,checkRow) != nullptr)
+	  return false;
+
+      return true;
+    }
     
-  if(sourceRow == destinationRow){
-    int colOffset = (destinationCol - sourceCol > 0) ? 1 : -1;
-    for(int checkCol = sourceCol + colOffset; checkCol != destinationCol; checkCol += colOffset)
-      if(board.getSquare(sourceRow, checkCol) != nullptr)
-	throw domain_error("cannot move to");
-
-    return true;
   }
-
-  else if(destinationCol == sourceCol){
-    int rowOffset = (destinationRow - sourceRow > 0) ? 1 : -1;
-    for(int checkRow = sourceRow + rowOffset; checkRow != destinationRow; checkRow += rowOffset)
-      if(board.getSquare(sourceCol,checkRow) != nullptr)
-	throw domain_error("cannot move to");
-
-    return true;
-  }
-
+  
   return false;
+
   
 }
   
