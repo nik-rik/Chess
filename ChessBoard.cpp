@@ -10,8 +10,12 @@
 
 using namespace std;
 
+/*ChessBoard constructor*/
 
 ChessBoard::ChessBoard() : turn(WHITE){
+
+  /* Creates the black and white pieces on the heap and stores them in their corresponding arrays */
+  
   whitePieces[0] = new Pawn(WHITE);
   whitePieces[1] = new Rook(WHITE);
   whitePieces[2] = new Knight(WHITE);
@@ -26,42 +30,84 @@ ChessBoard::ChessBoard() : turn(WHITE){
   blackPieces[4] = new Queen(BLACK);
   blackPieces[5]= new King(BLACK);
 
+
+  /* Clears the board by setting everything to a nullptr */
+  
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++)
       squares[i][j] = nullptr;
 
+
+  /* Places pieces on the board in the correct positions*/  
+
   placePieces();
 
-  cout << "A new chess game is started" << endl;
+  cout << "A new chess game is started!" << endl;
 }
 
+
+/* Helper function that assigns positions on the 'squares' array to correct piece pointers for start */
+
 void ChessBoard::placePieces(){
+
+
+  /* Places White Pawns */
 
   for (int j = 0; j < 8; j++)
     squares[1][j] = whitePieces[0];
 
-  squares[0][0] = whitePieces[1];
-  squares[0][1] = whitePieces[2];
-  squares[0][2] = whitePieces[3];
-  squares[0][3] = whitePieces[4];
-  squares[0][4] = whitePieces[5];
-  squares[0][5] = whitePieces[3];
-  squares[0][6] = whitePieces[2];
-  squares[0][7] = whitePieces[1];
 
+  /* Places White Pieces */
+  
+  squares[0][0] = whitePieces[1]; // Rook
+  squares[0][1] = whitePieces[2]; // Knight
+  squares[0][2] = whitePieces[3]; // Bishop
+  squares[0][3] = whitePieces[4]; // Queen
+  squares[0][4] = whitePieces[5]; // King
+  squares[0][5] = whitePieces[3]; // Bishop
+  squares[0][6] = whitePieces[2]; // Knight
+  squares[0][7] = whitePieces[1]; // Rook
+
+
+  /* Places Black Pawns  */
 
   for (int j = 0; j < 8; j++)
     squares[6][j] = blackPieces[0];
 
-  squares[7][0] = blackPieces[1];
-  squares[7][1] = blackPieces[2];
-  squares[7][2] = blackPieces[3];
-  squares[7][3] = blackPieces[4];
-  squares[7][4] = blackPieces[5];
-  squares[7][5] = blackPieces[3];
-  squares[7][6] = blackPieces[2];
-  squares[7][7] = blackPieces[1];
 
+  /* Places Black Pieces */
+  
+  squares[7][0] = blackPieces[1]; // Rook
+  squares[7][1] = blackPieces[2]; // Knight
+  squares[7][2] = blackPieces[3]; // Bishop
+  squares[7][3] = blackPieces[4]; // Queen
+  squares[7][4] = blackPieces[5]; // King
+  squares[7][5] = blackPieces[3]; // Bishop
+  squares[7][6] = blackPieces[2]; // Knight
+  squares[7][7] = blackPieces[1]; // Rook
+
+}
+
+
+/* Function that resets board */
+
+void ChessBoard::resetBoard(){
+
+  /* Sets all squares to be null pointers */
+  
+  for (int i = 0; i < 8; i++)
+    for (int j = 0; j < 8; j++)
+      squares[i][j] = nullptr;
+
+
+  placePieces();
+  
+
+  cout << "A new chess game is started!" << endl;
+
+
+  turn = WHITE;
+  
 }
 
 
@@ -228,9 +274,9 @@ bool ChessBoard::isMate(const Colour colour) {
     for(int sourceCol = 0; sourceCol < 8; sourceCol++){
       if(getSquare(sourceCol, sourceRow) == nullptr)
 	continue;
-      for(int destinationRow = 0; destinationRow < 8; destinationRow++)
-	for(int destinationCol = 0; destinationCol < 8; destinationCol++)
-	  if(getSquare(sourceCol, sourceRow)->getColour() == colour) 
+      if(getSquare(sourceCol, sourceRow)->getColour() == colour) 
+	for(int destinationRow = 0; destinationRow < 8; destinationRow++)
+	  for(int destinationCol = 0; destinationCol < 8; destinationCol++) 
 	    if(getSquare(sourceCol, sourceRow)->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == true){
 	      Piece* sourcePiece = getSquare(sourceCol, sourceRow);
 	      if(checkCheck(colour, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, *this) == false)
@@ -252,21 +298,6 @@ bool ChessBoard::checkCheck(const Colour colour, const int sourceCol, const int 
   return false;
 
 
-}
-
-  
-void ChessBoard::resetBoard(){
-
-  for (int i = 0; i < 8; i++)
-    for (int j = 0; j < 8; j++)
-      squares[i][j] = nullptr;
-
-  placePieces();
-  
-  cout << "A new chess game is started!" << endl;
-
-  turn = WHITE;
-  
 }
 
 
