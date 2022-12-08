@@ -79,7 +79,32 @@ void ChessBoard::submitMove(const char* source_square, const char* destination_s
   
     makeMove(source_square, destination_square, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece);
     
+    if (turn == WHITE){
+      if (isInCheck(BLACK)){
+	if (isMate(BLACK)){
+	  cout << "Black is in checkmate" << endl;
+	  return;
+	}
+	else
+	  cout << "Black is in check" << endl;
+      }
+    }
+    else if (turn == BLACK){
+      if (isInCheck(WHITE)){
+	if (isMate(WHITE)){
+	  cout << "White is in checkmate" << endl;
+	  return;
+	}
+	else
+	  cout << "White is in check" << endl;
+      }
+    }
+ 
+    ++turn;
 
+    if(isMate(turn))
+      cout << "The game is in stalemate" << endl;
+    
   }
   catch (const domain_error& ex){
     int sourceCol = (*source_square - 'A');
@@ -125,6 +150,26 @@ void ChessBoard::checkTurn(const Piece* sourcePiece){
 
 
 void ChessBoard::makeMove(const char* source_square, const char* destination_square, const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, Piece* destinationPiece){
+
+  squares[destinationRow][destinationCol] = sourcePiece;
+  squares[sourceRow][sourceCol] = nullptr;
+  
+  if(turn == WHITE)
+    if(isInCheck(WHITE)){
+      squares[destinationRow][destinationCol] = nullptr;
+      squares[sourceRow][sourceCol] = sourcePiece;
+      
+      throw domain_error("cannot move to");
+    }
+  if(turn == BLACK)
+    if(isInCheck(BLACK)){
+      squares[destinationRow][destinationCol] = nullptr;
+      squares[sourceRow][sourceCol] = sourcePiece;
+
+      throw domain_error("cannot move to");
+    }
+  
+  
   cout << turn << "'s " << sourcePiece->getPieceType() << " moves from " << source_square << " to " << destination_square;
 
   if (destinationPiece == nullptr)
@@ -138,36 +183,8 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
       cout << "White's ";
 
     cout << destinationPiece->getPieceType() << endl;
-  }    
-
-  squares[destinationRow][destinationCol] = sourcePiece;
-  squares[sourceRow][sourceCol] = nullptr;
-
-  if (turn == WHITE){
-    if (isInCheck(BLACK)){
-      if (isCheckmate(BLACK)){
-	cout << "Black is in checkmate" << endl;
-	return;
-      }
-      else
-	cout << "Black is in check" << endl;
-    }
   }
-  else if (turn == BLACK){
-    if (isInCheck(WHITE)){
-      if (isCheckmate(WHITE)){
-	cout << "White is in checkmate" << endl;
-	return;
-      }
-      else
-	cout << "White is in check" << endl;
-    }
-  }
- 
- ++turn;
 
- if(isStalemate(turn))
-   cout << "The game is in stalemate" << endl;
   
 }
 
@@ -223,7 +240,7 @@ bool ChessBoard::isInCheck(Colour colour){
   } */
 
 
-bool ChessBoard::isCheckmate(Colour colour){
+bool ChessBoard::isMate(Colour colour){
   for(int sourceRow = 0; sourceRow < 8; sourceRow++)
     for(int sourceCol = 0; sourceCol < 8; sourceCol++){
       if(getSquare(sourceCol, sourceRow) == nullptr)
@@ -257,26 +274,6 @@ bool ChessBoard::checkCheck(Colour colour, int sourceCol, int sourceRow, int des
   return false;
 
 
-}
-
-
-bool ChessBoard::isStalemate(Colour turn){
-    for(int sourceRow = 0; sourceRow < 8; sourceRow++)
-      for(int sourceCol = 0; sourceCol < 8; sourceCol++){
-	if(getSquare(sourceCol, sourceRow) == nullptr)
-	  continue;
-	for(int destinationRow = 0; destinationRow < 8; destinationRow++)
-	  for(int destinationCol = 0; destinationCol < 8; destinationCol++)
-	    if(getSquare(sourceCol, sourceRow)->getColour() == turn) 
-	      if(getSquare(sourceCol, sourceRow)->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == true){
-		Piece* sourcePiece = getSquare(sourceCol, sourceRow);
-		if(checkCheck(turn, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, *this) == false)
-		  return false;
-	      }
-   
-  }
-  return true;
-		
 }
 
   

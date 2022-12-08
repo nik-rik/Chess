@@ -47,10 +47,7 @@ class ChessBoard{
   bool checkCheck(Colour, int, int, int, int, Piece*, ChessBoard);
   
   Piece* findKing(Colour);
-  bool isCheckmate(Colour);
-
-
-  bool isStalemate(Colour);
+  bool isMate(Colour);
 
 
 
