@@ -11,7 +11,7 @@
 using namespace std;
 
 
-ChessBoard::ChessBoard() : turn(WHITE), whiteCheck(false), blackCheck(false){
+ChessBoard::ChessBoard() : turn(WHITE){
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++)
       squares[i][j] = nullptr;
@@ -143,24 +143,31 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
   squares[destinationRow][destinationCol] = sourcePiece;
   squares[sourceRow][sourceCol] = nullptr;
 
-if (turn == WHITE){
+  if (turn == WHITE){
     if (isInCheck(BLACK)){
-      if (isCheckmate(BLACK))
+      if (isCheckmate(BLACK)){
 	cout << "Black is in checkmate" << endl;
+	return;
+      }
       else
 	cout << "Black is in check" << endl;
     }
   }
   else if (turn == BLACK){
     if (isInCheck(WHITE)){
-	if (isCheckmate(WHITE))
-	  cout << "White is in checkmate" << endl;
-	else
-	  cout << "White is in check" << endl;
+      if (isCheckmate(WHITE)){
+	cout << "White is in checkmate" << endl;
+	return;
+      }
+      else
+	cout << "White is in check" << endl;
     }
   }
  
  ++turn;
+
+ if(isStalemate(turn))
+   cout << "The game is in stalemate" << endl;
   
 }
 
@@ -250,6 +257,26 @@ bool ChessBoard::checkCheck(Colour colour, int sourceCol, int sourceRow, int des
   return false;
 
 
+}
+
+
+bool ChessBoard::isStalemate(Colour turn){
+    for(int sourceRow = 0; sourceRow < 8; sourceRow++)
+      for(int sourceCol = 0; sourceCol < 8; sourceCol++){
+	if(getSquare(sourceCol, sourceRow) == nullptr)
+	  continue;
+	for(int destinationRow = 0; destinationRow < 8; destinationRow++)
+	  for(int destinationCol = 0; destinationCol < 8; destinationCol++)
+	    if(getSquare(sourceCol, sourceRow)->getColour() == turn) 
+	      if(getSquare(sourceCol, sourceRow)->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == true){
+		Piece* sourcePiece = getSquare(sourceCol, sourceRow);
+		if(checkCheck(turn, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, *this) == false)
+		  return false;
+	      }
+   
+  }
+  return true;
+		
 }
 
   

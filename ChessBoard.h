@@ -48,12 +48,9 @@ class ChessBoard{
   
   Piece* findKing(Colour);
   bool isCheckmate(Colour);
-  
-  bool whiteCheck;
-  bool blackCheck;
 
 
-
+  bool isStalemate(Colour);
 
 
 
