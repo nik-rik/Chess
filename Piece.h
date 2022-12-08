@@ -30,7 +30,7 @@ class Piece{
   PieceType getPieceType() const;
   void setPieceType(const PieceType&);
 
-  virtual bool checkMove(const int, const int, const int, const int, ChessBoard&) /*const*/ = 0;
+  virtual bool checkMove(const int, const int, const int, const int, ChessBoard&) const = 0;
 
   virtual ~Piece() = default;
 

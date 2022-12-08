@@ -10,7 +10,7 @@ Bishop::Bishop(Colour colour) : Piece(colour, BISHOP) {
  
 }
 
-bool Bishop::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
+bool Bishop::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) const{
   Piece* destinationPiece = board.getSquare(destinationCol, destinationRow);
   
   if(destinationPiece == nullptr || destinationPiece->getColour() != getColour()){

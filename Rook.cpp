@@ -10,7 +10,7 @@ Rook::Rook(Colour colour) : Piece(colour, ROOK){
  
 }
 
-bool Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) {
+bool Rook::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) const {
   Piece* destinationPiece = board.getSquare(destinationCol, destinationRow);
   
   if(destinationPiece == nullptr || destinationPiece->getColour() != getColour()){    

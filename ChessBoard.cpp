@@ -12,16 +12,30 @@ using namespace std;
 
 
 ChessBoard::ChessBoard() : turn(WHITE){
-  for (int i = 0; i < 8; i++)
-    for (int j = 0; j < 8; j++)
-      squares[i][j] = nullptr;
-
   whitePieces[0] = new Pawn(WHITE);
   whitePieces[1] = new Rook(WHITE);
   whitePieces[2] = new Knight(WHITE);
   whitePieces[3] = new Bishop(WHITE);
   whitePieces[4] = new Queen(WHITE);
   whitePieces[5]= new King(WHITE);
+
+  blackPieces[0] = new Pawn(BLACK);
+  blackPieces[1] = new Rook(BLACK);
+  blackPieces[2] = new Knight(BLACK);
+  blackPieces[3] = new Bishop(BLACK);
+  blackPieces[4] = new Queen(BLACK);
+  blackPieces[5]= new King(BLACK);
+
+  for (int i = 0; i < 8; i++)
+    for (int j = 0; j < 8; j++)
+      squares[i][j] = nullptr;
+
+  placePieces();
+
+  cout << "A new chess game is started" << endl;
+}
+
+void ChessBoard::placePieces(){
 
   for (int j = 0; j < 8; j++)
     squares[1][j] = whitePieces[0];
@@ -36,13 +50,6 @@ ChessBoard::ChessBoard() : turn(WHITE){
   squares[0][7] = whitePieces[1];
 
 
-  blackPieces[0] = new Pawn(BLACK);
-  blackPieces[1] = new Rook(BLACK);
-  blackPieces[2] = new Knight(BLACK);
-  blackPieces[3] = new Bishop(BLACK);
-  blackPieces[4] = new Queen(BLACK);
-  blackPieces[5]= new King(BLACK);
-
   for (int j = 0; j < 8; j++)
     squares[6][j] = blackPieces[0];
 
@@ -55,10 +62,9 @@ ChessBoard::ChessBoard() : turn(WHITE){
   squares[7][6] = blackPieces[2];
   squares[7][7] = blackPieces[1];
 
-  cout << "A new chess game is started" << endl;
 }
 
-// Piece** ChessBoard::WhitePieces 
+
 
 void ChessBoard::submitMove(const char* source_square, const char* destination_square){
   try {
@@ -131,19 +137,19 @@ void ChessBoard::submitMove(const char* source_square, const char* destination_s
 
   
 
-Piece* ChessBoard::getSquare(const int col, const int row){
+Piece* ChessBoard::getSquare(const int col, const int row) const {
    if (col > 7 || row > 7)
      throw logic_error("You must input a valid square on the board!");
   
     return squares[row][col];
 }
 
-void ChessBoard::checkSourceNULL(const Piece* sourcePiece, const char* source_square){
+void ChessBoard::checkSourceNULL(const Piece* sourcePiece, const char* source_square) const {
     if (sourcePiece == nullptr)
       throw out_of_range("There is no piece at position: ");
 }
 
-void ChessBoard::checkTurn(const Piece* sourcePiece){
+void ChessBoard::checkTurn(const Piece* sourcePiece) const {
   if (sourcePiece->getColour() != turn)
       throw invalid_argument("Incorrect turn");
 }
@@ -183,12 +189,11 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
       cout << "White's ";
 
     cout << destinationPiece->getPieceType() << endl;
-  }
-
-  
+  }  
 }
 
-bool ChessBoard::isInCheck(Colour colour){
+
+bool ChessBoard::isInCheck(const Colour colour) {
   Piece* attackingPiece;
   int kingRow;
   int kingCol;
@@ -218,29 +223,7 @@ bool ChessBoard::isInCheck(Colour colour){
 }
 
 
-/*Piece* ChessBoard::findKing(Colour colour){
-  int kingRow;
-  int kingCol;
-  Piece* kingPiece;
-
-  for(int row = 0; row < 8; row++)
-    for(int col = 0; col < 8; col++)
-      if(squares[row][col] != nullptr)
-	if(squares[row][col]->getPieceType() == KING)
-	  if(squares[row][col]->getColour() == colour){
-	    kingRow = row;
-	    kingCol = col;
-	    break;
-	  }
-
-  kingPiece = getSquare(kingCol, kingRow);
-
-  return kingPiece;
-
-  } */
-
-
-bool ChessBoard::isMate(Colour colour){
+bool ChessBoard::isMate(const Colour colour) {
   for(int sourceRow = 0; sourceRow < 8; sourceRow++)
     for(int sourceCol = 0; sourceCol < 8; sourceCol++){
       if(getSquare(sourceCol, sourceRow) == nullptr)
@@ -257,14 +240,9 @@ bool ChessBoard::isMate(Colour colour){
 
   return true;
 }
-  
 
 
-	    
-	  
-
-
-bool ChessBoard::checkCheck(Colour colour, int sourceCol, int sourceRow, int destinationCol, int destinationRow, Piece* sourcePiece, ChessBoard testBoard){
+bool ChessBoard::checkCheck(const Colour colour, const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, Piece* sourcePiece, ChessBoard testBoard){
   testBoard.squares[sourceRow][sourceCol] = nullptr;
   testBoard.squares[destinationRow][destinationCol] = sourcePiece;
 
@@ -283,30 +261,8 @@ void ChessBoard::resetBoard(){
     for (int j = 0; j < 8; j++)
       squares[i][j] = nullptr;
 
-  for (int j = 0; j < 8; j++)
-    squares[1][j] = whitePieces[0];
-
-  squares[0][0] = whitePieces[1];
-  squares[0][1] = whitePieces[2];
-  squares[0][2] = whitePieces[3];
-  squares[0][3] = whitePieces[4];
-  squares[0][4] = whitePieces[5];
-  squares[0][5] = whitePieces[3];
-  squares[0][6] = whitePieces[2];
-  squares[0][7] = whitePieces[1];
-
-  for (int j = 0; j < 8; j++)
-    squares[6][j] = blackPieces[0];
-
-  squares[7][0] = blackPieces[1];
-  squares[7][1] = blackPieces[2];
-  squares[7][2] = blackPieces[3];
-  squares[7][3] = blackPieces[4];
-  squares[7][4] = blackPieces[5];
-  squares[7][5] = blackPieces[3];
-  squares[7][6] = blackPieces[2];
-  squares[7][7] = blackPieces[1];
-
+  placePieces();
+  
   cout << "A new chess game is started!" << endl;
 
   turn = WHITE;
@@ -314,7 +270,7 @@ void ChessBoard::resetBoard(){
 }
 
 
-void ChessBoard::printBoard(){
+void ChessBoard::printBoard() const{
   cout << " ";
   for(char x = 'A'; x != 'H'+1; x++){
     cout <<"|"<< x <<"";

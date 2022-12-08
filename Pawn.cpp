@@ -10,7 +10,7 @@ Pawn::Pawn(Colour colour) : Piece(colour, PAWN){
  
 }
 
-bool Pawn::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) { 
+bool Pawn::checkMove(const int sourceCol, const int sourceRow, const int destinationCol, const int destinationRow, ChessBoard& board) const{ 
   Piece* destinationPiece = board.getSquare(destinationCol, destinationRow);
   
   if(getColour() == WHITE){

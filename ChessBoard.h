@@ -14,42 +14,30 @@ class ChessBoard{
  public:
   ChessBoard();
 
-  void resetBoard();
-  
   void submitMove(const char*, const char*);
+  void resetBoard();
+  void printBoard() const;
 
-  Piece* getSquare(const int, const int) /*const*/; 
-
-  void checkTurn(const Piece*);//const;
-  void checkSourceNULL(const Piece*, const char*);//const;
-
-  
-  
-  bool checkWhiteCheck();
-  bool checkBlackCheck();
-
-  bool checkStalemate();
-  bool checkCheckmate();
-
-  Colour turn;
-
-  void printBoard();
+  Piece* getSquare(const int, const int) const;
   
  private:
   Piece* squares[8][8];
   Piece* whitePieces[6];
   Piece* blackPieces[6];
+  Colour turn;
 
-
+  void placePieces();
+  
+  void checkTurn(const Piece*) const;
+  void checkSourceNULL(const Piece*, const char*) const;
+  
   void makeMove(const char*, const char*, const int, const int, const int, const int, Piece*, Piece*);
   
-  bool isInCheck(Colour);
-  bool checkCheck(Colour, int, int, int, int, Piece*, ChessBoard);
+  bool isInCheck(const Colour);
+  bool checkCheck(const Colour, const int, const int, const int, const int, Piece*, ChessBoard);
   
-  Piece* findKing(Colour);
-  bool isMate(Colour);
-
-
+  bool isMate(const Colour);
+  
 
 };
 
