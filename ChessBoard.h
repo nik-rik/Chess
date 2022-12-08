@@ -32,6 +32,8 @@ class ChessBoard{
   bool checkCheckmate();
 
   Colour turn;
+
+  void printBoard();
   
  private:
   Piece* squares[8][8];

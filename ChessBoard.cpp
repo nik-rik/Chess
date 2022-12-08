@@ -159,8 +159,8 @@ if (turn == WHITE){
 	  cout << "White is in check" << endl;
     }
   }
-  
-  ++turn;
+ 
+ ++turn;
   
 }
 
@@ -217,41 +217,16 @@ bool ChessBoard::isInCheck(Colour colour){
 
 
 bool ChessBoard::isCheckmate(Colour colour){
-  int kingRow;
-  int kingCol;
-  Piece* kingPiece;
-  
-  for(int row = 0; row < 8; row++)
-    for(int col = 0; col < 8; col++)
-      if(squares[row][col] != nullptr)
-	if(squares[row][col]->getPieceType() == KING)
-	  if(squares[row][col]->getColour() == colour){
-	    kingRow = row;
-	    kingCol = col;
-	    break;
-	  }
-
-  kingPiece = getSquare(kingCol, kingRow);
-
-  for(int destinationRow = 0; destinationRow < 8; destinationRow++)
-    for(int destinationCol = 0; destinationCol < 8; destinationCol++)
-      if(kingPiece->checkMove(kingCol, kingRow, destinationCol, destinationRow, *this) == true)
-	if(checkCheck(colour, kingCol, kingRow, destinationCol, destinationRow, kingPiece, *this) == false)
-	    return false;
-      
-
-  
-
   for(int sourceRow = 0; sourceRow < 8; sourceRow++)
-    for(int sourceCol = 0; sourceCol < 8; sourceCol++)
+    for(int sourceCol = 0; sourceCol < 8; sourceCol++){
+      if(getSquare(sourceCol, sourceRow) == nullptr)
+	continue;
       for(int destinationRow = 0; destinationRow < 8; destinationRow++)
-	for(int destinationCol = 0; destinationCol < 8; destinationCol++){
-	  if(getSquare(sourceCol, sourceRow) == nullptr)
-	    continue;
+	for(int destinationCol = 0; destinationCol < 8; destinationCol++)
 	  if(getSquare(sourceCol, sourceRow)->getColour() == colour) 
 	    if(getSquare(sourceCol, sourceRow)->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == true){
 	      Piece* sourcePiece = getSquare(sourceCol, sourceRow);
-	      if(checkCheck(colour, sourceCol, sourceRow, destinationRow, destinationCol, sourcePiece, *this) == false)
+	      if(checkCheck(colour, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, *this) == false)
 		return false;
 	    }
 	}
@@ -259,15 +234,15 @@ bool ChessBoard::isCheckmate(Colour colour){
   return true;
 }
   
-  
+
 
 	    
 	  
 
 
-bool ChessBoard::checkCheck(Colour colour, int sourceCol, int sourceRow, int destinationCol, int destinationRow, Piece* kingPiece, ChessBoard testBoard){
+bool ChessBoard::checkCheck(Colour colour, int sourceCol, int sourceRow, int destinationCol, int destinationRow, Piece* sourcePiece, ChessBoard testBoard){
   testBoard.squares[sourceRow][sourceCol] = nullptr;
-  testBoard.squares[destinationRow][destinationCol] = kingPiece;
+  testBoard.squares[destinationRow][destinationCol] = sourcePiece;
 
   if(testBoard.isInCheck(colour) == true)
     return true;
@@ -312,4 +287,56 @@ void ChessBoard::resetBoard(){
 
   turn = WHITE;
   
+}
+
+
+void ChessBoard::printBoard(){
+  cout << " ";
+  for(char x = 'A'; x != 'H'+1; x++){
+    cout <<"|"<< x <<"";
+  }
+  cout << "|" << endl;
+
+  for(int ranks = 7; ranks >= 0; ranks--){
+    cout << ranks +1 << "|";
+    for(int files = 0; files < 8; files++){
+      cout << "_";
+
+      // This is where the actual pawns are outputted.                                                                                                                                                      
+
+      if(squares[ranks][files] != nullptr){
+        switch(squares[ranks][files]->getPieceType()){
+        case PAWN:
+          if(squares[ranks][files]->getColour() == WHITE) cout << "P";
+          else cout << "p";
+          break;
+        case KNIGHT:
+          if(squares[ranks][files]->getColour() == WHITE) cout << "N";
+          else cout << "n";
+          break;
+        case BISHOP:
+          if(squares[ranks][files]->getColour() == WHITE) cout << "B";
+          else cout << "b";
+          break;
+        case ROOK:
+          if(squares[ranks][files]->getColour() == WHITE) cout << "R";
+          else cout << "r";
+          break;
+        case QUEEN:
+          if(squares[ranks][files]->getColour() == WHITE) cout << "Q";
+          else cout << "q";
+          break;
+        case KING:
+          if(squares[ranks][files]->getColour() == WHITE) cout << "K";
+          else cout << "k";
+          break;
+        default:
+          cout << "_";
+        }}else{ cout << "_"; }
+
+
+      cout << "_|";
+    }
+    cout << endl;
+  }
 }
