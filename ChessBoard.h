@@ -13,6 +13,7 @@ class Piece;
 class ChessBoard{
  public:
   ChessBoard();  // ChessBoard constructor
+  //~ChessBoard();
   void resetBoard();
   void printBoard() const;
 

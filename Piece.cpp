@@ -10,6 +10,9 @@ Piece::Piece(Colour colour, PieceType type){
 
 }
 
+
+//Piece::~Piece(){}
+
 Colour Piece::getColour() const{
 
   return colour;

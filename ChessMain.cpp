@@ -74,7 +74,7 @@ int main() {
 	cb.submitMove("D3", "G6");
 	cout << '\n';
 
-	cout << "=========================\n";
+	/*	cout << "=========================\n";
 	cout << "Stalemate\n";
 	cout << "=========================\n\n";
 
@@ -118,7 +118,7 @@ int main() {
 	cout << '\n';
 
 	cb.submitMove("C8", "E6");
-	cout << '\n';
+	cout << '\n';*/
 
 	return 0;
 }

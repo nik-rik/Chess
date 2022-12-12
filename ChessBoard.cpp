@@ -45,6 +45,17 @@ ChessBoard::ChessBoard() : turn(WHITE){
   cout << "A new chess game is started!" << endl;
 }
 
+/* ChessBoard::~ChessBoard(){
+  for(int i = 0; i < 6; i++){
+    delete whitePieces[i];
+    whitePieces[i] = nullptr;
+    
+    delete blackPieces[i];
+    blackPieces[i] = nullptr;
+  }
+  } */
+
+ 
 
 /* Helper function that assigns positions on the 'squares' array to correct piece pointers for start */
 
@@ -111,26 +122,32 @@ void ChessBoard::resetBoard(){
 }
 
 
-
+/* Function that takes in move and processes is */
 void ChessBoard::submitMove(const char* source_square, const char* destination_square){
   try {
+
     int sourceCol = (*source_square - 'A');
     int sourceRow = (*(source_square + 1) - '1');
 
     int destinationCol = (*destination_square - 'A');
     int destinationRow = (*(destination_square + 1) - '1');
-  
+
     Piece* sourcePiece = getSquare(sourceCol, sourceRow);
+
     Piece* destinationPiece = getSquare(destinationCol, destinationRow);
     
-    checkSourceNULL(sourcePiece, source_square);
+    checkSourceNULL(sourcePiece, source_square); 
+    
     checkTurn(sourcePiece);
 
+    
+    
     if (sourcePiece->checkMove(sourceCol, sourceRow, destinationCol, destinationRow, *this) == false)
       throw domain_error("cannot move to");
   
     makeMove(source_square, destination_square, sourceCol, sourceRow, destinationCol, destinationRow, sourcePiece, destinationPiece);
-    
+
+    /* Checks if there is check and, if so, whether there is a checkmate */
     if (turn == WHITE){
       if (isInCheck(BLACK)){
 	if (isMate(BLACK)){
@@ -205,7 +222,8 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
 
   squares[destinationRow][destinationCol] = sourcePiece;
   squares[sourceRow][sourceCol] = nullptr;
-  
+
+  /*Ensures that a king cant move into check */
   if(turn == WHITE)
     if(isInCheck(WHITE)){
       squares[destinationRow][destinationCol] = nullptr;
@@ -221,7 +239,7 @@ void ChessBoard::makeMove(const char* source_square, const char* destination_squ
       throw domain_error("cannot move to");
     }
   
-  
+  /*Formats output for move */
   cout << turn << "'s " << sourcePiece->getPieceType() << " moves from " << source_square << " to " << destination_square;
 
   if (destinationPiece == nullptr)
@@ -244,6 +262,7 @@ bool ChessBoard::isInCheck(const Colour colour) {
   int kingRow;
   int kingCol;
 
+  /* Finds King */
   for(int row = 0; row < 8; row++)
     for(int col = 0; col < 8; col++)
       if(squares[row][col] != nullptr)
@@ -254,7 +273,7 @@ bool ChessBoard::isInCheck(const Colour colour) {
 	    break;
 	  }
 
-
+  /* Checks through all opponents pieces to see if there is a piece that can take the King*/
   for(int row = 0; row < 8; row++)
     for(int col = 0; col < 8; col++)  
       if(squares[row][col] != nullptr)
@@ -270,6 +289,8 @@ bool ChessBoard::isInCheck(const Colour colour) {
 
 
 bool ChessBoard::isMate(const Colour colour) {
+
+  /* */
   for(int sourceRow = 0; sourceRow < 8; sourceRow++)
     for(int sourceCol = 0; sourceCol < 8; sourceCol++){
       if(getSquare(sourceCol, sourceRow) == nullptr)

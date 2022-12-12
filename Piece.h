@@ -32,7 +32,7 @@ class Piece{
 
   virtual bool checkMove(const int, const int, const int, const int, ChessBoard&) const = 0;
 
-  virtual ~Piece() = default;
+  //virtual ~Piece();
 
  private:
   PieceType type;
